@@ -15,8 +15,8 @@ def main():
     eval_parser.add_argument('--task', choices=['horizon', 'star', 'quality'], required=True,
                              help="Task name to evaluate")
 
-    # Subparser for capturing images using Pi camera (or simulation)
-    capture_parser = subparsers.add_parser('capture', help="Capture images from PiCamera (or webcam simulation)")
+    # Subparser for capturing images and predict
+    subparsers.add_parser('capture', help="Capture images and predict")
 
     args = parser.parse_args()
 
