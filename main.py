@@ -16,7 +16,8 @@ def main():
                              help="Task name to evaluate")
 
     # Subparser for capturing images and predict
-    subparsers.add_parser('capture', help="Capture images and predict")
+    subparsers.add_parser('capture and predict',
+                          help="Capture images and predict")
 
     args = parser.parse_args()
 
@@ -27,8 +28,8 @@ def main():
     elif args.command == 'evaluate':
         from evaluate import evaluate_model
         evaluate_model(args.task)
-    elif args.command == 'capture':
-        from capture import main_menu
+    elif args.command == 'capture and predict':
+        from capture_and_predict import main_menu
         main_menu()
     else:
         parser.print_help()

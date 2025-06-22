@@ -70,8 +70,8 @@ pip3 install -r requirements.txt
 ## Usage
 
 ```bash
-# Capture photos with PiCamera (single or burst)
-python3 main.py capture
+# Capture photos and predict the type
+python3 main.py capture and predict
 
 # Train a model for a specific task (horizon, star, or quality)
 python3 main.py train --task <horizon|star|quality>
