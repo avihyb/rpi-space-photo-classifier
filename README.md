@@ -1,48 +1,43 @@
 # RPi Space Photo Classifier
 
-Lightweight CLI for Raspberry Pi Zero 2 to capture single/burst photos, index metadata, run image‑classification stubs, and seamlessly transfer the latest shot to a ground desktop over SSH. :contentReference[oaicite:0]{index=0}
+Lightweight CLI for Raspberry Pi Zero 2 to capture single/burst photos, index metadata, run image‑classification stubs, and seamlessly transfer the latest shot to a ground desktop over SSH.
 
 ## Table of Contents
 
-- [Features](#features)  
-- [Prerequisites](#prerequisites)  
-- [Installation](#installation)  
-- [Configuration](#configuration)  
-- [Usage](#usage)  
-  - [CLI Overview](#cli-overview)  
-  - [Capture Mode](#capture-mode)  
-  - [Training Models](#training-models)  
-  - [Evaluating Models](#evaluating-models)  
-- [Project Structure](#project-structure)  
-- [Contributing](#contributing)  
-- [License](#license)  
-- [Contact](#contact)  
+* [Features](#features)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
 
 ## Features
 
-- **Single & Burst Capture**: Take individual or burst photos via Raspberry Pi Camera.  
-- **Metadata Indexing**: Automatically record filename, timestamp, and classification status.  
-- **Stubbed Classification**: Out‑of‑the‑box stubs for three classification tasks: `horizon`, `star`, and `quality`. :contentReference[oaicite:1]{index=1}  
-- **SSH/SCP Transfer**: One‑click transfer of the latest photo to your desktop over SSH.  
-- **Modular Design**: Clean separation into `camera`, `utils`, `inference`, `models`, and `data` modules.
+* **Single & Burst Capture**: Take individual or burst photos via Raspberry Pi Camera.
+* **Metadata Indexing**: Automatically record filename, timestamp, and classification status.
+* **Stubbed Classification**: Out‑of‑the‑box stubs for three classification tasks: `horizon`, `star`, and `quality`.
+* **SSH/SCP Transfer**: One‑click transfer of the latest photo to your desktop over SSH.
+* **Modular Design**: Clean separation into `camera`, `utils`, `inference`, `models`, and `data` modules.
 
 ## Prerequisites
 
-- **Hardware**  
-  - Raspberry Pi Zero 2 with Raspberry Pi Camera Module V2 (enabled via `sudo raspi-config`)  
-  - MicroSD card with Raspberry Pi OS  
+* **Hardware**
 
-- **Software**  
-  - Python 3.7+  
-  - `pip3`  
-  - SSH key‑based access configured between Pi and your ground desktop  
+  * Raspberry Pi Zero 2 with Raspberry Pi Camera Module V2 (enabled via `sudo raspi-config`)
+  * MicroSD card with Raspberry Pi OS
 
-- **Python Packages**  
-  - `picamera` (or `opencv-python` for `--simulate`)  
-  - `numpy`  
-  - `Pillow`  
-  - `pandas`  
-  - `scikit-learn` (or `tensorflow` / `tflite-runtime` if replacing the stub)  
+* **Software**
+
+  * Python 3.7+
+  * `pip3`
+  * SSH key‑based access configured between Pi and your ground desktop
+
+* **Python Packages**
+
+  * `picamera` (or `opencv-python` for `--simulate`)
+  * `numpy`
+  * `Pillow`
+  * `pandas`
+  * `scikit-learn` (or `tensorflow` / `tflite-runtime` if replacing the stub)
 
 ## Installation
 
@@ -56,3 +51,34 @@ source venv/bin/activate
 
 # Install dependencies
 pip3 install -r requirements.txt
+```
+
+## Configuration
+
+1. **Update Transfer Settings**
+   In `capture.py`, set your SSH details:
+
+   ```python
+   MAC_USER = "your_username"
+   MAC_DOWNLOAD_DIR = "/path/to/download/dir"
+   ```
+2. **SSH Setup**
+   Ensure you can `ssh pi@<pi-ip>` from your desktop without a password (use SSH keys).
+3. **Classification Model**
+   Replace stub logic in `inference/predict.py` and add your model files to `models/`.
+
+## Usage
+
+```bash
+# Capture photos with PiCamera (single or burst)
+python3 main.py capture
+
+# Simulate capture using a webcam instead of PiCamera
+python3 main.py capture --simulate
+
+# Train a model for a specific task (horizon, star, or quality)
+python3 main.py train --task <horizon|star|quality>
+
+# Evaluate a trained model on test data
+python3 main.py evaluate --task <horizon|star|quality>
+```
