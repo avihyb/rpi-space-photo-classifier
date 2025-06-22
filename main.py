@@ -17,8 +17,6 @@ def main():
 
     # Subparser for capturing images using Pi camera (or simulation)
     capture_parser = subparsers.add_parser('capture', help="Capture images from PiCamera (or webcam simulation)")
-    capture_parser.add_argument('--simulate', action='store_true',
-                                help="Use OpenCV webcam simulation instead of PiCamera")
 
     args = parser.parse_args()
 
