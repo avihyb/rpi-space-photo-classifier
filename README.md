@@ -16,7 +16,8 @@ Lightweight CLI for Raspberry Pi Zero 2 to capture single/burst photos, index m
 * **Metadata Indexing**: Automatically record filename, timestamp, and classification status.
 * **Stubbed Classification**: Out‑of‑the‑box stubs for three classification tasks: `horizon`, `star`, and `quality`.
 * **SSH/SCP Transfer**: One‑click transfer of the latest photo to your desktop over SSH.
-* **Modular Design**: Clean separation into `camera`, `utils`, `inference`, `models`, and `data` modules.
+* **Modular Design**: Clean separation into `camera`, `utils`, `inference`, `models`, and now `processor` modules.
+* **Continuous Pipeline**: `processor/pipeline.py` implements an always-on loop that captures, filters, crops and classifies images using an on-device TFLite model.
 
 ## Prerequisites
 
@@ -33,11 +34,12 @@ Lightweight CLI for Raspberry Pi Zero 2 to capture single/burst photos, index m
 
 * **Python Packages**
 
-  * `picamera` (or `opencv-python` for `--simulate`)
+  * `picamera` or `picamera2`
+  * `opencv-python`
   * `numpy`
   * `Pillow`
   * `pandas`
-  * `scikit-learn` (or `tensorflow` / `tflite-runtime` if replacing the stub)
+  * `tflite-runtime` (or full `tensorflow` if preferred)
 
 ## Installation
 
@@ -79,3 +81,23 @@ python3 main.py train --task <horizon|star|quality>
 # Evaluate a trained model on test data
 python3 main.py evaluate --task <horizon|star|quality>
 ```
+
+### Continuous Onboard Pipeline
+
+To run the always-on processor that captures, filters and classifies images in a loop:
+
+```bash
+python3 processor/pipeline.py
+```
+
+The script stores cropped images and metadata in `camera.PHOTO_DIR` and prints the predicted label for each capture.
+
+### Retraining the Model
+
+If you gather new labeled data you can retrain the lightweight MobileNetV2 model and export a quantized TFLite file:
+
+```bash
+python3 retrain.py /path/to/training_data --epochs 10 --output models/classifier.tflite
+```
+
+The training data directory should contain one subfolder per class (e.g. `Horizon`, `Stars`). The resulting `classifier.tflite` file will be used by the onboard pipeline.

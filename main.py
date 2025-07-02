@@ -19,6 +19,10 @@ def main():
     subparsers.add_parser('capture and predict',
                           help="Capture images and predict")
 
+    # Continuous onboard pipeline
+    subparsers.add_parser('pipeline',
+                          help="Run continuous capture/classify loop")
+
     args = parser.parse_args()
 
     # Dispatch to the appropriate functionality
@@ -31,6 +35,9 @@ def main():
     elif args.command == 'capture and predict':
         from capture_and_predict import main_menu
         main_menu()
+    elif args.command == 'pipeline':
+        from processor.pipeline import main as run_pipeline
+        run_pipeline()
     else:
         parser.print_help()
         sys.exit(1)
