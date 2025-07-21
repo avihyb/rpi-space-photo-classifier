@@ -60,7 +60,7 @@ if args.capture:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
         # Using Laplacian variance method: low variance indicates blur:contentReference[oaicite:4]{index=4}
-        blur_threshold = 100.0
+        blur_threshold = 50.0
         if laplacian_var < blur_threshold:
             print(f"[Info] Image is blurry (Laplacian var={laplacian_var:.2f} < {blur_threshold}), deleting image.")
             # We do not save blurry images
