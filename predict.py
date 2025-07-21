@@ -3,8 +3,8 @@ import numpy as np
 import tensorflow as tf
 
 # Load pre-trained models (these files should exist from the training phase)
-model_stars = tf.keras.models.load_model("stars_model.h5")
-model_horizon = tf.keras.models.load_model("horizon_model.h5")
+model_stars = tf.keras.models.load_model("../output_models/best_stars_model.h5")
+model_horizon = tf.keras.models.load_model("../output_models/best_horizon_model.h5")
 
 # Define image size expected by the models (for example, 224x224)
 IMG_SIZE = (224, 224)
