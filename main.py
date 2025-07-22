@@ -48,12 +48,6 @@ if args.capture:
     config['mission']['missioncount'] = str(mission_count)
     print(f"[Mission] Capture and Classify (mission #{mission_count}) starting...")
 
-    # Initialize camera capture using OpenCV
-    # cap = cv2.VideoCapture(0)  # Open default camera (Pi Camera)
-    # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    # ret, frame = cap.read()
-    # cap.release()
     try:
         picam2 = Picamera2()
         cfg = picam2.create_still_configuration(main={"size": (1280, 720)})
@@ -74,7 +68,7 @@ if args.capture:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
         # Using Laplacian variance method: low variance indicates blur:contentReference[oaicite:4]{index=4}
-        blur_threshold = 50.0
+        blur_threshold = 8.0
         if laplacian_var < blur_threshold:
             print(f"[Info] Image is blurry (Laplacian var={laplacian_var:.2f} < {blur_threshold}), deleting image.")
             # We do not save blurry images
