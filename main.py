@@ -3,6 +3,7 @@ import sys
 import cv2
 import argparse
 import configparser
+from datetime import datetime
 from picamera2 import Picamera2, Preview
 from predict import predict_stars, predict_horizon
 
@@ -95,7 +96,7 @@ if args.capture:
                 # Save image to the corresponding folder
                 pic_count = int(config['mission']['piccount'])
                 pic_count += 1
-                filename = f"image_{pic_count}.jpg"
+                filename = f"{classification}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg"
                 save_path = os.path.join(STARS_DIR if classification == "stars" else HORIZON_DIR, filename)
                 cv2.imwrite(save_path, frame)  # save the captured frame as JPEG file
                 config['mission']['piccount'] = str(pic_count)
