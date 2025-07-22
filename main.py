@@ -3,6 +3,7 @@ import sys
 import cv2
 import argparse
 import configparser
+from picamera2 import Picamera2, Preview
 from predict import predict_stars, predict_horizon
 
 # === Configuration Setup ===
@@ -48,11 +49,17 @@ if args.capture:
     print(f"[Mission] Capture and Classify (mission #{mission_count}) starting...")
 
     # Initialize camera capture using OpenCV
-    cap = cv2.VideoCapture(0)  # Open default camera (Pi Camera)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    ret, frame = cap.read()
-    cap.release()
+    # cap = cv2.VideoCapture(0)  # Open default camera (Pi Camera)
+    # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    # ret, frame = cap.read()
+    # cap.release()
+    picam2 = Picamera2()
+    config = picam2.create_still_configuration(main={"size":(1280,720)})
+    picam2.configure(config)
+    picam2.start()
+    frame = picam2.capture_array()   # returns a NumPy array (RGB)
+    picam2.stop()
     if not ret:
         print("[Error] Camera capture failed!")
     else:
@@ -79,7 +86,8 @@ if args.capture:
             else:
                 classification = None
 
-            if classification is None:
+            # if classification is None:
+            if False:
                 print("[Info] Image did not match stars or horizon categories. Discarding image.")
                 # (Not saving the image since it's neither stars nor horizon)
             else:
