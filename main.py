@@ -96,7 +96,8 @@ if args.capture:
                 # Save image to the corresponding folder
                 pic_count = int(config['mission']['piccount'])
                 pic_count += 1
-                filename = f"{classification}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg"
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"{classification}_{timestamp}.jpg"
                 save_path = os.path.join(STARS_DIR if classification == "stars" else HORIZON_DIR, filename)
                 cv2.imwrite(save_path, frame)  # save the captured frame as JPEG file
                 config['mission']['piccount'] = str(pic_count)
