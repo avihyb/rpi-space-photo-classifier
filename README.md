@@ -10,6 +10,16 @@ This project is a complete pipeline for **capturing space images and automatical
 
 The goal is to conserve downlink bandwidth by only sending high-quality images of stars or the Earth's horizon, while discarding blurry or irrelevant photos automatically.
 
+
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+  - [PC Training Environment Setup](#pc-training-environment-setup)
+  - [Raspberry Pi Deployment Setup](#raspberry-pi-deployment-setup)
+- [Usage](#usage)
+
+
 ## Project Structure
 
 ```
@@ -48,7 +58,18 @@ The goal is to conserve downlink bandwidth by only sending high-quality images o
 - **images_to_send/** – Folders where classified images await transmission.
 - **requirements.txt** – List of required Python packages for both PC and Raspberry Pi environments.
 
-## PC Training Environment Setup
+
+## Prerequisites
+
+- **Python 3.8+** for both PC and Raspberry Pi.  
+- **Raspberry Pi OS Bullseye** (or later) on the Raspberry Pi.  
+- **Camera Module 3** connected via the CSI interface.  
+- **Internet connection** for installing Python packages.
+
+
+## Setup
+
+### PC Training Environment Setup
 
 1. **Create a virtual environment** (recommended):
    ```bash
@@ -58,7 +79,7 @@ The goal is to conserve downlink bandwidth by only sending high-quality images o
 
 2. **Install dependencies**:
    ```bash
-   pip install tensorflow scikit-learn numpy
+   pip install -r requirements_PC.txt
    ```
 
 3. **Prepare the dataset**:  
@@ -95,27 +116,18 @@ The goal is to conserve downlink bandwidth by only sending high-quality images o
 
 3. **Install deployment requirements**:
    ```bash
-   pip3 install tflite-runtime opencv-python numpy
+   pip3 install -r requirements_pi.txt
    ```
 
 4. **Copy TFLite models** from `output_models/` on PC to `output_models/` on Pi:
    ```bash
    scp output_models/*.tflite pi@<PI_IP>:/home/pi/space_photo_classifier/output_models/
    ```
+   
 
-5. **Run in Capture mode**:
-   ```bash
-   python3 main.py -c
-   ```
+## Usage
 
-6. **Run in Send mode**:
-   ```bash
-   python3 main.py -s
-   ```
-
-## Example Usage
-
-Capture a clear image of the horizon:
+Capture a clear image, classify it to its type and saving it:
 ```bash
 $ python3 main.py -c
 [Mission] Capture and Classify...
@@ -131,14 +143,3 @@ $ python3 main.py -s
 bytearray(b'...')
 [Info] Sent 1 images and cleared folders.
 ```
-
-## Notes
-
-- **Blurriness Check:** Uses OpenCV’s Laplacian variance; threshold adjustable in `main.py`.
-- **Model Inputs:** Images are resized to 224×224 and normalized to [-1,1] for TFLite models.
-- **Configurations:** `config.conf` stores counters for persistent state across reboots.
-- **Extensibility:** You can swap the backbone (e.g., EfficientNet) or add quantization during TFLite conversion if needed.
-
----
-
-*Created as part of the Space Engineering final project.*  
