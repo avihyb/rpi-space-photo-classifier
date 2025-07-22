@@ -1,0 +1,9 @@
+# PC (Training Environment) requirements
+tensorflow>=2.5       # TensorFlow (includes Keras) for model training and conversion
+scikit-learn>=0.24    # For accuracy, precision, recall metrics
+numpy>=1.19           # Numerical computations (TensorFlow dependency)
+
+# Raspberry Pi (Deployment Environment) requirements
+tflite-runtime>=2.5.0 # Lightweight TensorFlow Lite runtime for inference on Pi:contentReference[oaicite:0]{index=0}
+opencv-python>=4.5    # OpenCV for image capture and processing on Pi
+numpy>=1.19           # Numerical computations (also required on Pi)
