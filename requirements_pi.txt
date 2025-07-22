@@ -1,0 +1,5 @@
+# Raspberry Pi (Deployment Environment) requirements
+tflite-runtime>=2.5.0 # TensorFlow Lite runtime for inference
+opencv-python>=4.5    # OpenCV for image capture and blur detection
+picamera2>=0.0.13     # Picamera2 API for Camera Module 3
+numpy>=1.19           # Numerical computations
