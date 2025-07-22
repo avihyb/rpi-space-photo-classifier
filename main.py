@@ -54,14 +54,21 @@ if args.capture:
     # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     # ret, frame = cap.read()
     # cap.release()
-    picam2 = Picamera2()
-    config = picam2.create_still_configuration(main={"size":(1280,720)})
-    picam2.configure(config)
-    picam2.start()
-    frame = picam2.capture_array()   # returns a NumPy array (RGB)
-    picam2.stop()
-    if not ret:
-        print("[Error] Camera capture failed!")
+    try:
+        picam2 = Picamera2()
+        cfg = picam2.create_still_configuration(main={"size": (1280, 720)})
+        picam2.configure(cfg)
+        picam2.start()
+        # capture_array() returns a NumPy RGB array
+        frame = picam2.capture_array()
+        picam2.stop()
+    except Exception as e:
+        print(f"[Error] Camera capture failed: {e}")
+        frame = None
+
+    if frame is None:
+        # If capture failed, skip processing
+        print("[Error] No frame captured, aborting mission.")
     else:
         # Check if the captured image is too blurry
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
