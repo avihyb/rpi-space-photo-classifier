@@ -1,0 +1,4 @@
+# PC (Training Environment) requirements
+tensorflow>=2.5       # TensorFlow for model training and conversion
+scikit-learn>=0.24    # For evaluation metrics (precision, recall)
+numpy>=1.19           # Numerical computations
